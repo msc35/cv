@@ -11,16 +11,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Refined editorial palette: deep ink + warm parchment + amber accent */
-            --ink: #1a1d29;
-            --ink-soft: #2a2f3e;
-            --paper: #faf7f2;
-            --paper-warm: #f3ede3;
-            --line: #e6dfd3;
-            --muted: #6b6356;
-            --accent: #b8541f;
-            --accent-soft: #d4a574;
-            --highlight: #fef3e2;
+            /* Cool Swiss palette: white paper + near-black ink + single Swiss red accent */
+            --ink: #0d0d0f;
+            --ink-soft: #1c1c20;
+            --paper: #ffffff;
+            --paper-warm: #f2f2f3;
+            --line: #e2e2e4;
+            --muted: #6a6a70;
+            --accent: #e3001b;
+            --accent-soft: #d6d6d9;
+            --highlight: #ffdedb;
 
             --serif: 'Fraunces', Georgia, serif;
             --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -50,8 +50,8 @@
             -moz-osx-font-smoothing: grayscale;
             /* Subtle paper texture via layered gradients */
             background-image:
-                radial-gradient(ellipse at top left, rgba(184, 84, 31, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom right, rgba(26, 29, 41, 0.03) 0%, transparent 50%);
+                radial-gradient(ellipse at top left, rgba(227, 0, 27, 0.025) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(13, 13, 15, 0.02) 0%, transparent 50%);
             background-attachment: fixed;
         }
 
@@ -77,7 +77,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(250, 247, 242, 0.92);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--line);
@@ -172,7 +172,7 @@
             object-fit: cover;
             box-shadow:
                 0 1px 0 var(--line),
-                0 20px 40px -15px rgba(26, 29, 41, 0.25);
+                0 20px 40px -15px rgba(13, 13, 15, 0.22);
             transition: var(--transition);
             filter: grayscale(15%) contrast(1.02);
         }
@@ -396,7 +396,7 @@
         .project-card:hover {
             border-color: var(--ink);
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px -15px rgba(26, 29, 41, 0.15);
+            box-shadow: 0 15px 30px -15px rgba(13, 13, 15, 0.14);
         }
 
         .project-card:hover::before {
@@ -422,7 +422,7 @@
             height: 44px;
             border-radius: 8px;
             object-fit: cover;
-            box-shadow: 0 2px 8px rgba(26, 29, 41, 0.12);
+            box-shadow: 0 2px 8px rgba(13, 13, 15, 0.10);
         }
 
         .project-icon-fallback {
@@ -458,8 +458,8 @@
         }
 
         .status-live {
-            background: #1f4d2c;
-            color: #d4f4dd;
+            background: var(--accent);
+            color: #ffffff;
         }
 
         .status-review {
