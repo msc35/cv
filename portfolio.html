@@ -984,6 +984,26 @@
                     </div>
                 </div>
 
+                <div class="project-card fade-in">
+                    <div class="project-head">
+                        <div class="project-icon-wrap">
+                            <div class="project-icon-fallback"><i class="fas fa-shield-halved"></i></div>
+                            <span class="project-title">Agentic Ticket Pipeline</span>
+                        </div>
+                        <span class="status-badge status-shipped">Demo</span>
+                    </div>
+                    <p>An agentic incident-to-ticket pipeline for a chip-development and functional-safety setting. A Gemini agent reads a messy incident report, investigates it with tools over synthetic data, reasons about the root cause, and drafts a structured ticket. Around the agent sits a deterministic reliability layer: outputs must pass a strict Pydantic schema, the root cause must be grounded in the evidence the tools actually returned, and anything touching a safety-rated (ASIL / ISO 26262) component is routed to a human regardless of confidence. Built with FastAPI and streams the reasoning trace live.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Agentic AI</span>
+                        <span class="project-tag">Gemini</span>
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">Pydantic</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="https://github.com/msc35/agentic-ticket-pipeline-demo" target="_blank" rel="noopener" class="btn"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+
             </div>
         </section>
 
