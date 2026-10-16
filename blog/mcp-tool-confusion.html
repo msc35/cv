@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Your AI assistant is picking the wrong tool, and nothing tells you — Mehmet Selim Çetin</title>
+    <meta name="description" content="AI assistants choose tools by reading one-line descriptions. I built mispick to measure which MCP tools a model confuses, and learned that AI-written fixes often make it worse.">
+    <meta name="author" content="Mehmet Selim Çetin">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Your AI assistant is picking the wrong tool, and nothing tells you">
+    <meta property="og:description" content="I built a tool to measure which MCP tools an AI model mixes up. Five things I learned, including why AI-written fixes often make it worse.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://msc35.github.io/cv/blog/mcp-tool-confusion.html">
+    <meta property="og:image" content="https://msc35.github.io/cv/images/pp.png">
+    <meta property="article:published_time" content="2026-10-17">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://msc35.github.io/cv/blog/mcp-tool-confusion.html">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0f'/%3E%3Ctext x='32' y='41' font-family='monospace' font-size='22' font-weight='700' text-anchor='middle' fill='%233ee6ff'%3EMSC%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="bg-glow" aria-hidden="true"></div>
+
+    <nav class="nav" aria-label="Primary">
+        <div class="nav-inner">
+            <a href="../portfolio" class="nav-mark" title="Portfolio">MSC</a>
+            <ul class="nav-links">
+                <li><a href="../portfolio">Portfolio</a></li>
+                <li><a href="./">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main" class="blog-main">
+        <article class="blog-narrow">
+            <a class="blog-back mono" href="./"><i class="fas fa-arrow-left" aria-hidden="true"></i> All posts</a>
+
+            <h1 class="blog-title">Your AI assistant is picking the wrong tool, and nothing tells you</h1>
+            <p class="blog-lede">AI assistants choose tools by reading one-line descriptions. I built an open-source tool to measure how often they mix them up. The most surprising lesson: when an AI rewrites a confusing description to “fix” it, the rewrite often makes things worse.</p>
+            <p class="blog-meta mono">17 October 2026 · Mehmet Selim Çetin · 8 min read</p>
+
+            <div class="prose">
+                <h2>A failure that makes no noise</h2>
+                <p>Modern AI assistants don’t just chat. They call <em>tools</em>: search your docs, read a file, open a ticket, send an invoice. More and more of those tools come through MCP, the Model Context Protocol, which lets you plug a “server” full of tools into Claude, Cursor or any other client.</p>
+                <p>Here is the part that is easy to miss. When you ask for something, the model decides which tool to call by reading a short description of each one. That’s it. Picture a server with <code>search_docs</code> and <code>search_issues</code>, both described simply as “Search for information.” That is a deliberately bad example from mispick’s own test suite, but real servers come closer to it than you would think. The model has to guess from those few words which one you meant.</p>
+                <p>When it guesses wrong, nothing crashes. The wrong tool runs, returns something plausible, and the assistant carries on. You get a worse answer and never learn why. Install a few servers side by side and it gets worse: two servers that both ship a <code>search</code> tool are now competing for the same requests.</p>
+
+                <h2>Measure it, don’t lint it</h2>
+                <p>There are good linters for MCP tool definitions. They check descriptions against rules: is it too short, is a parameter undocumented, is the name in the right case. Run one. But a description can pass every rule and still be indistinguishable from the tool next to it. A rule can only predict confusion. I wanted to <strong>measure</strong> it.</p>
+                <p>So I built <a href="https://github.com/msc35/mispick">mispick</a>. It works in four steps:</p>
+                <ol>
+                    <li><strong>Read the tool list.</strong> It sends only <code>tools/list</code> and never calls a tool, so it is safe to point at a server that deletes things.</li>
+                    <li><strong>Write test requests.</strong> For each tool it generates realistic requests a user might type, including “hard negatives”: requests written to sound as close as possible to the neighbouring tool.</li>
+                    <li><strong>Ask a real model.</strong> It shows the model the real tool definitions, exactly as a client would, and records which tool it picks, several times per request.</li>
+                    <li><strong>Count.</strong> The result is a <em>confusion matrix</em>, a table of which tools get chosen when another was meant, plus per-tool precision and recall and a 0–100 score.</li>
+                </ol>
+                <pre><code>uvx mispick run --cmd "python -m my_server"</code></pre>
+                <p>It runs free on a local model through Ollama, and there is a GitHub Action that posts the matrix on every pull request. Building it taught me more than I expected. Here are the five lessons that stuck.</p>
+
+                <h2>1. AI-written “fixes” often make it worse</h2>
+                <p>The obvious next step after finding a confused pair is to ask a model to rewrite the two descriptions so they are easier to tell apart. mispick does that, with one rule: <strong>every rewrite is re-tested</strong> on the same requests, and kept only if a paired statistical test (McNemar’s) says it helped.</p>
+                <p>That rule turned out to be the most important feature. In my runs on a small local model, two of three proposed rewrites made tool selection measurably <em>worse</em>. One took a tool from 78% to 58% accuracy. It broke 14 trials and fixed none, and the result held up when I re-ran it with three times the data. The model’s explanation for the rewrite read perfectly sensibly.</p>
+                <p>I’m not alone in this. Hasan et al. rewrote tool descriptions with an LLM across 231 tasks: success rose by a median of 5.85 points, but <strong>regressed in 16.67% of cases</strong> (<a href="https://arxiv.org/abs/2602.14878">arXiv 2602.14878</a>). An untested rewrite is roughly a one-in-six bet on making things worse.</p>
+                <blockquote>A rewrite you didn’t measure is a guess. A plausible explanation is not evidence.</blockquote>
+
+                <h2>2. A “wrong” pick can be a sensible one</h2>
+                <p>Running a pilot on the official MCP <em>memory</em> server, I asked the model “Can you remove the old meeting notes from the Project Alpha entity in the graph?” It called <code>search_nodes</code>, not <code>delete_observations</code>. Was that confusion? Not really: it was looking the entity up before changing it, which is what a careful person would do.</p>
+                <p>mispick scores the <em>first</em> tool a model calls, so this counts as a miss. That is a real limitation, and I now state it everywhere a score appears. The same pilot exposed a bug in my own test requests. Early ones said things like “insert these nodes into the graph” without saying which nodes, and a model that sensibly looks before it writes was being punished for my vagueness. The generator now has to spell out concrete names and values.</p>
+
+                <h2>3. Your model may never see half the tools</h2>
+                <p>This one nearly made it into a published result. Local models have a limited context window, and Ollama divides it between parallel requests. Send a large tool list into a small window and it is silently truncated: in one case I sent about 24,000 tokens of tool definitions and the server reported processing about 2,050. The model replied that it had no tools, and every trial would have been recorded as “chose nothing”.</p>
+                <p>That would have published a 0% score and blamed the server’s descriptions for my configuration. mispick now compares the prompt size the API reports against its own estimate, and refuses to score when they don’t match. Failing loudly beats a number that looks real.</p>
+
+                <h2>4. For routing, thinking is pure cost</h2>
+                <p>Most tool-capable models small enough for a laptop are “reasoning” models that think before they answer. For “pick one tool”, that thinking bought nothing: on <code>qwen3.5:4b</code>, one call took 89 seconds and 1,078 tokens with thinking on, against 2.2 seconds and 20 tokens with it off, for the same answer. mispick turns thinking off by default.</p>
+
+                <h2>5. Small samples deserve honest error bars</h2>
+                <p>With a handful of requests per tool, “75% accurate” can easily mean anything from 40% to 95%. Every rate mispick reports carries a Wilson 95% interval, and comparisons use paired tests, because the before and after runs use the same requests. Reading the interval instead of the point estimate changed several of my own conclusions.</p>
+
+                <h2>What’s next: a benchmark, and a study</h2>
+                <p>Right now a scheduled job is measuring real servers from the official MCP registry on a free API tier, a few hundred calls a day. On top of it I’ve set up a small research study with three questions:</p>
+                <ul>
+                    <li>What makes two tools easy to confuse: similar descriptions, overlapping names, or missing “use this when…” guidance?</li>
+                    <li>Does a cheap model’s confusion predict a stronger model’s?</li>
+                    <li>Do generated test requests give the same results as hand-written ones?</li>
+                </ul>
+                <p>I wrote down the analysis plan and committed it <a href="https://github.com/msc35/mispick/blob/main/docs/analysis-plan.md">before seeing any results</a>, including what would count as “no effect”, so the questions can’t quietly bend to fit the answers. The results will be a follow-up post, whatever they turn out to be.</p>
+
+                <h2>Try it</h2>
+                <pre><code>uvx mispick run --cmd "python -m my_server"       # a local server
+uvx mispick run --snapshot tools.json               # a captured tool list
+uvx mispick run --config claude_desktop_config.json # every server at once</code></pre>
+                <p>Code: <a href="https://github.com/msc35/mispick">github.com/msc35/mispick</a> (MIT). GitHub Action: <a href="https://github.com/marketplace/actions/mispick-mcp-tool-confusion-check">mispick on the Marketplace</a>. If you build MCP servers, I’d love to hear whether the confusions it finds match what you see.</p>
+            </div>
+
+            <p class="post-footer">Written by <a href="../portfolio">Mehmet Selim Çetin</a>, Munich. I work across data, product and AI.</p>
+        </article>
+    </main>
+</body>
+</html>
