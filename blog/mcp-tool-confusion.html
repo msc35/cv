@@ -103,6 +103,14 @@
                 <figure class="blog-figure">
                     <img src="img/what-matters.png" alt="Chart of nine factors and how each changes the odds of the wrong tool being picked. Overlapping names: plus 28%. Similar descriptions: plus 11%. The right tool saying when to use it: minus 28%, the only factor that holds up in the strict check." width="1548" height="1008" loading="lazy">
                 </figure>
+                <p><strong>What a mix-up looks like.</strong> Each row below is the tool a request was meant for, and each column is what the AI picked; numbers on the diagonal are correct. On one real server, every request to <em>run</em> a model went to the tool that <em>lists</em> models:</p>
+                <figure class="blog-figure">
+                    <img src="img/matrix-wavespeed.png" alt="Confusion matrix for ai.wavespeed/mcp: 60 percent of requests went to the right tool; all 18 run_model requests went to list_models." width="1504" height="1161" loading="lazy">
+                </figure>
+                <p>Compare a server whose five tools are clearly separated. Every request went to the right tool:</p>
+                <figure class="blog-figure">
+                    <img src="img/matrix-acquisition.png" alt="Confusion matrix for Acquisition.gov: every request went to the right tool." width="1281" height="963" loading="lazy" style="max-width:80%;margin:0 auto">
+                </figure>
                 <p>What I can say, from the strongest to the weakest evidence:</p>
                 <ul>
                     <li><strong>Say when to use your tool.</strong> When a tool’s description says when it should be used, requests meant for it were taken by other tools less often: 28% lower odds. This is the one effect that survived every check, including the strictest one.</li>
