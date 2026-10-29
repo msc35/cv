@@ -46,3 +46,18 @@
     margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
     color: var(--muted); font-size: 0.9rem;
 }
+
+.blog-update {
+    margin: -1.25rem 0 2.5rem; padding: 0.8rem 1rem; border-radius: var(--radius-sm);
+    border: 1px solid rgba(var(--accent-rgb), 0.35); background: rgba(var(--accent-rgb), 0.06);
+    color: var(--text-soft); font-size: 0.95rem;
+}
+.blog-update a { color: var(--accent); }
+.blog-figure { margin: 1.5rem 0 1.25rem; }
+.blog-figure img {
+    display: block; width: 100%; height: auto;
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }

@@ -44,7 +44,8 @@
 
             <h1 class="blog-title">Your AI assistant is picking the wrong tool, and nothing tells you</h1>
             <p class="blog-lede">AI assistants choose tools by reading one-line descriptions. I built an open-source tool to measure how often they mix them up. The most surprising lesson: when an AI rewrites a confusing description to “fix” it, the rewrite often makes things worse.</p>
-            <p class="blog-meta mono">17 October 2026 · Mehmet Selim Çetin · 8 min read</p>
+            <p class="blog-meta mono">17 October 2026 · updated 29 October · Mehmet Selim Çetin · 10 min read</p>
+            <p class="blog-update"><strong>Update, 29 October:</strong> the benchmark has finished. <a href="#results">Jump to the first results</a>.</p>
 
             <div class="prose">
                 <h2>A failure that makes no noise</h2>
@@ -84,14 +85,33 @@
                 <h2>5. Small samples deserve honest error bars</h2>
                 <p>With a handful of requests per tool, “75% accurate” can easily mean anything from 40% to 95%. Every rate mispick reports carries a Wilson 95% interval, and comparisons use paired tests, because the before and after runs use the same requests. Reading the interval instead of the point estimate changed several of my own conclusions.</p>
 
-                <h2>What’s next: a benchmark, and a study</h2>
-                <p>Right now a scheduled job is measuring real servers from the official MCP registry on a free API tier, a few hundred calls a day. On top of it I’ve set up a small research study with three questions:</p>
+                <h2>The benchmark, and a study</h2>
+                <p>Next, I ran mispick over real servers from the official MCP registry on a free API tier, a few hundred calls a day for 13 days. On top of it I set up a small research study with three questions:</p>
                 <ul>
                     <li>What makes two tools easy to confuse: similar descriptions, overlapping names, or missing “use this when…” guidance?</li>
                     <li>Does a cheap model’s confusion predict a stronger model’s?</li>
                     <li>Do generated test requests give the same results as hand-written ones?</li>
                 </ul>
-                <p>I wrote down the analysis plan and committed it <a href="https://github.com/msc35/mispick/blob/main/docs/analysis-plan.md">before seeing any results</a>, including what would count as “no effect”, so the questions can’t quietly bend to fit the answers. The results will be a follow-up post, whatever they turn out to be.</p>
+                <p>I wrote down the analysis plan and committed it <a href="https://github.com/msc35/mispick/blob/main/docs/analysis-plan.md">before seeing any results</a>, including what would count as “no effect”, so the questions couldn’t quietly bend to fit the answers.</p>
+
+                <h2 id="results">Update: the first results</h2>
+                <p>The first question has an answer. These numbers come from 13 servers, 201 tools and 3,618 test requests, all on Gemini 3.5 Flash-Lite.</p>
+                <figure class="blog-figure">
+                    <img src="img/similarity.png" alt="Bar chart: the most similar fifth of tool pairs were confused in 0.87% of requests, against 0.18% for the least similar fifth, 4.8 times as often." width="1548" height="792" loading="lazy">
+                </figure>
+                <p><strong>Mix-ups are rare, but not random.</strong> Pairs of tools with the most similar descriptions were confused 4.8 times as often as the least similar pairs. That is a pattern, not proof that similarity causes it.</p>
+                <figure class="blog-figure">
+                    <img src="img/what-matters.png" alt="Chart of nine factors and how each changes the odds of the wrong tool being picked. Overlapping names: plus 28%. Similar descriptions: plus 11%. The right tool saying when to use it: minus 28%, the only factor that holds up in the strict check." width="1548" height="1008" loading="lazy">
+                </figure>
+                <p>What I can say, from the strongest to the weakest evidence:</p>
+                <ul>
+                    <li><strong>Say when to use your tool.</strong> When a tool’s description says when it should be used, requests meant for it were taken by other tools less often: 28% lower odds. This is the one effect that survived every check, including the strictest one.</li>
+                    <li><strong>Overlapping names go with more mix-ups</strong> (+28% odds), and that direction held in every check. But in the strictest check its range also included “no effect”.</li>
+                    <li><strong>Similar descriptions mattered less than I expected.</strong> The effect is small (+11%), and it even reverses when the largest server is left out.</li>
+                </ul>
+                <p>The honest summary: with only 13 servers, a few big servers carry much of the result, so most of these effects are fragile. By the rule I wrote down in advance, the answer to the first question is “yes, there is an effect”. But the checks I also wrote down in advance say not to lean on it too hard. I’m reporting both, because a study that only shows its best number isn’t worth much.</p>
+                <p>One more finding came for free. One server’s tool list contains a broken schema, a reference to a definition that doesn’t exist, and Gemini rejected every single request because of it. Any app using that server with Gemini would fail every time. A simple schema check would have caught that one, and I’ll report it to the maintainers.</p>
+                <p>Still to come: whether a stronger model gets confused by the same pairs, and whether hand-written test requests agree with generated ones. The full tables, intervals and checks are in <a href="https://github.com/msc35/mispick/blob/main/docs/study.md#results">the write-up</a>.</p>
 
                 <h2>Try it</h2>
                 <pre><code>uvx mispick run --cmd "python -m my_server"       # a local server
