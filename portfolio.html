@@ -110,7 +110,7 @@
                     <h2>About</h2>
                 </div>
                 <p class="about-text" data-split>
-                    I work where <strong>data, product, and AI</strong> meet. Shipping iOS apps, validating credit risk models, automating SAP master-data workflows, translating stakeholder needs into agile sprints. MSc in Statistics &amp; Data Science (ML specialization) from LMU Munich, two and a half years at <strong>Infineon Technologies</strong> on SAP master data and workflow automation, a year as <strong>Product Owner</strong> at SCW.AI, and a first data job validating credit risk models at Yapı Kredi Bank. Alongside that I build and release my own AI-native iOS apps. Industrial Engineering foundation, across semiconductors, supply chain, and finance.
+                    I work where <strong>data, product, and AI</strong> meet. I hold an MSc in Statistics &amp; Data Science (Machine Learning specialization) from LMU Munich and spent two and a half years at <strong>Infineon Technologies</strong> automating SAP master-data workflows. Before that, I was a <strong>Product Owner</strong> at SCW.AI and validated credit risk models at Yapı Kredi Bank. Alongside my work, I build and release my own AI products: Guidera, an iOS app live on the App Store, and mispick, an open-source tool that measures how LLMs choose between tools. My background is in Industrial Engineering, with experience across semiconductors, supply chain, and finance.
                 </p>
                 <ul class="pills" data-stagger aria-label="Core tools">
                     <li class="pill">Python</li>
@@ -184,11 +184,11 @@
                             <span class="badge">Open Source · PyPI</span>
                         </div>
                         <h4 class="project-title">mispick</h4>
-                        <p>An open-source tool that measures which of an AI assistant's tools a model mixes up. It generates realistic test requests for every MCP tool, asks a real model to choose, and reports a confusion matrix with confidence intervals. It never runs a tool. Proposed description rewrites are re-tested and kept only if they measurably help. Also a GitHub Action, and the base of a pre-registered study.</p>
+                        <p>A Python CLI that measures which MCP tools an LLM confuses with each other. It generates realistic and hard-negative requests for every tool, has a real model pick a tool for each one, and reports a confusion matrix, per-tool precision and recall with Wilson 95% intervals, and a 0–100 score. Suggested description rewrites are re-tested on the same requests and kept only if a McNemar test shows they helped. Benchmarked on 14 real MCP servers (3,636 requests) with a pre-registered study. Runs free on local models via Ollama.</p>
                         <ul class="tags" aria-label="Technologies">
                             <li>Python</li>
-                            <li>LLM Evaluation</li>
                             <li>MCP</li>
+                            <li>LLM Evaluation</li>
                             <li>Statistics</li>
                         </ul>
                         <div class="btn-group">
@@ -200,23 +200,8 @@
 
                     <article class="card project-card">
                         <div class="project-head">
-                            <div class="project-icon"><i class="fas fa-feather-pointed" aria-hidden="true"></i></div>
-                            <span class="badge badge-review">App Store Review</span>
-                        </div>
-                        <h4 class="project-title">Trames</h4>
-                        <p>An AI-generated narrative game for iOS. Players input a life decision and receive a personalized 14-day branching story; an agentic pipeline handles plot branching, character continuity, and daily delivery. Built solo in Swift.</p>
-                        <ul class="tags" aria-label="Technologies">
-                            <li>Swift</li>
-                            <li>Agentic AI</li>
-                            <li>Narrative Game</li>
-                            <li>iOS</li>
-                        </ul>
-                    </article>
-
-                    <article class="card project-card">
-                        <div class="project-head">
                             <div class="project-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
-                            <span class="badge">Published</span>
+                            <span class="badge">Thesis · PyPI</span>
                         </div>
                         <h4 class="project-title">Master's Thesis &amp; <code>hasa</code></h4>
                         <p>"Robust SGD by Developing a Sample Selection Algorithm on Image Classification Tasks." Includes <strong>hasa</strong>, a Python package implementing the proposed sample-selection method, published on PyPI.</p>
@@ -227,7 +212,7 @@
                         </ul>
                         <div class="btn-group">
                             <a href="https://www.dropbox.com/scl/fi/hmgjo3tf1uy08717uzuzn/Thesis_final.pdf?rlkey=6rps2melji2z47ygaffx0r1ai&amp;st=ydedv5c3&amp;dl=0" target="_blank" rel="noopener" class="btn"><i class="fas fa-file-lines" aria-hidden="true"></i> Thesis</a>
-                            <a href="https://pypi.org/project/hasa/0.1.1/" target="_blank" rel="noopener" class="btn"><i class="fab fa-python" aria-hidden="true"></i> PyPI</a>
+                            <a href="https://pypi.org/project/hasa/" target="_blank" rel="noopener" class="btn"><i class="fab fa-python" aria-hidden="true"></i> PyPI</a>
                         </div>
                     </article>
 
@@ -281,21 +266,6 @@
                         </div>
                     </article>
 
-                    <article class="card project-card">
-                        <div class="project-head">
-                            <div class="project-icon"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
-                            <span class="badge">Personal Tool</span>
-                        </div>
-                        <h4 class="project-title">Investment Analysis Dashboard</h4>
-                        <p>A Python dashboard that pulls portfolio data, runs price prediction models and adjusts strategy from the results. Built end to end with AI coding agents (Cursor), apart from the model training, which I did myself.</p>
-                        <ul class="tags" aria-label="Technologies">
-                            <li>Python</li>
-                            <li>Time Series</li>
-                            <li>AI Coding Agents</li>
-                            <li>Dashboard</li>
-                        </ul>
-                    </article>
-
                 </div>
             </div>
         </section>
@@ -340,7 +310,7 @@
                         <h3 class="exp-role">Data Scientist Intern</h3>
                         <p class="exp-company">Yapı Kredi Bank <span>· Istanbul, Turkey · Risk Validation Department</span></p>
                         <ul class="task-list">
-                            <li>Validated and back-tested credit risk models, applying statistical tests that improved model accuracy (Gini) by ~3% and ensured regulatory compliance.</li>
+                            <li>Validated and back-tested credit risk models, using statistical tests such as the Gini coefficient to assess model performance for regulatory review.</li>
                             <li>Automated model monitoring reports using Python and SQL, reducing monthly reporting lead time by ~30%.</li>
                             <li>Developed validation frameworks across 5+ risk models for robust performance evaluation.</li>
                         </ul>
@@ -361,21 +331,21 @@
                         <p class="edu-date mono">Graduated May 2026</p>
                         <h3 class="edu-degree">M.Sc. Statistics &amp; Data Science <span class="muted">— Machine Learning Specialization</span></h3>
                         <p class="edu-school">Ludwig-Maximilians-Universität München · Germany</p>
-                        <p class="edu-detail"><strong>Focus:</strong> Data-driven decision making, predictive analytics, statistical computing, deep learning. <br><strong>Thesis:</strong> <em>Robust SGD by Developing a Sample Selection Algorithm on Image Classification Tasks.</em></p>
+                        <p class="edu-detail"><strong>Focus:</strong> Machine learning, deep learning, and statistical computing. <br><strong>Thesis:</strong> <em>Robust SGD by Developing a Sample Selection Algorithm on Image Classification Tasks.</em></p>
                     </article>
 
                     <article class="card edu-card">
                         <p class="edu-date mono">Aug 2017 — Aug 2022</p>
                         <h3 class="edu-degree">B.Sc. Industrial Engineering</h3>
                         <p class="edu-school">Bilkent University · Ankara, Turkey</p>
-                        <p class="edu-detail"><strong>Honors:</strong> Cum Laude (GPA 3.36/4.0). Strong foundation in optimization algorithms, stochastic processes, and system engineering. Ranked top ~0.15% in Turkish university entrance exam (~3,000 / 2M+ candidates).</p>
+                        <p class="edu-detail"><strong>Honors:</strong> Cum Laude (GPA 3.36/4.0). Strong foundation in optimization algorithms, stochastic processes, and systems engineering. Ranked top ~0.15% in Turkish university entrance exam (~3,000 / 2M+ candidates).</p>
                     </article>
 
                     <article class="card edu-card">
                         <p class="edu-date mono">2013 — 2017</p>
                         <h3 class="edu-degree">High School Diploma · Science Track</h3>
                         <p class="edu-school">İzmir Fen Lisesi · İzmir, Turkey</p>
-                        <p class="edu-detail">Graduated from one of Turkey's nationally-selective science high schools (Fen Lisesi system; admission top ~0.1% nationally).</p>
+                        <p class="edu-detail">Graduated from one of Turkey's nationally selective science high schools (Fen Lisesi system; admission top ~0.1% nationally).</p>
                     </article>
 
                 </div>
@@ -414,15 +384,14 @@
                         <h3 class="skill-label mono">AI &amp; Automation</h3>
                         <ul class="skills">
                             <li class="featured">Agentic AI Pipelines</li>
-                            <li class="featured">LLM API Integration</li>
+                            <li class="featured">LLM Evaluation</li>
+                            <li>MCP &amp; Tool Calling</li>
+                            <li>LLM API Integration</li>
                             <li>RAG Systems</li>
                             <li>Hybrid Retrieval (Vector + BM25)</li>
-                            <li>LLM Evaluation</li>
-                            <li>LangChain</li>
-                            <li>LlamaIndex</li>
-                            <li>Prompt Engineering</li>
+                            <li>Structured Outputs (Pydantic)</li>
+                            <li>Local LLMs (Ollama)</li>
                             <li>AI Coding Agents (Cursor, Claude Code)</li>
-                            <li>Process Automation</li>
                         </ul>
                     </div>
 
@@ -444,17 +413,15 @@
                     <div class="card skill-block">
                         <h3 class="skill-label mono">Statistics &amp; ML</h3>
                         <ul class="skills">
-                            <li>Supervised &amp; Unsupervised Learning</li>
-                            <li>Deep Learning</li>
+                            <li class="featured">Credit Risk Model Validation</li>
+                            <li>Model Back-testing</li>
+                            <li>Hypothesis Testing &amp; Confidence Intervals</li>
+                            <li>Experimental Design / A/B Testing</li>
                             <li>Bayesian Inference</li>
                             <li>Time Series Forecasting</li>
-                            <li>Hypothesis Testing</li>
-                            <li>A/B Testing</li>
-                            <li>Feature Engineering</li>
-                            <li>Regression</li>
-                            <li>Predictive Modeling</li>
-                            <li>Anomaly Detection</li>
-                            <li>Risk Model Validation</li>
+                            <li>Deep Learning (CNNs, PyTorch)</li>
+                            <li>Robust Optimization (SGD)</li>
+                            <li>XGBoost, GLMs, Clustering</li>
                         </ul>
                     </div>
 
@@ -463,11 +430,9 @@
                         <ul class="skills">
                             <li>Agile / Scrum</li>
                             <li>Product Ownership</li>
-                            <li>Stakeholder Communication</li>
-                            <li>KPI Development</li>
-                            <li>Dashboard Design</li>
-                            <li>Data Storytelling</li>
                             <li>Requirements &amp; User Stories</li>
+                            <li>Stakeholder Management</li>
+                            <li>KPI Development</li>
                             <li>Process Mapping</li>
                         </ul>
                     </div>
@@ -488,7 +453,7 @@
                         <p class="edu-date mono">Aug 2026 — Sep 2026</p>
                         <h3 class="edu-degree">Machine Learning Engineer &ndash; Associate Learning Plan</h3>
                         <p class="edu-school">AWS Skill Builder</p>
-                        <p class="edu-detail">Hands-on Builder Labs covering data preparation, model training, deployment and monitoring on AWS. This is the learning plan with labs, not the AWS certification exam.</p>
+                        <p class="edu-detail">Hands-on Builder Labs covering data preparation, model training, deployment and monitoring on AWS (learning plan, not the certification exam).</p>
                     </article>
 
                     <article class="card edu-card">
@@ -535,7 +500,6 @@
                     <li class="pill">Skiing</li>
                     <li class="pill">Traveling</li>
                     <li class="pill">Football</li>
-                    <li class="pill">Driving licence · Class B (DE)</li>
                 </ul>
             </div>
         </section>
@@ -583,13 +547,12 @@
 
     <footer class="footer">
         <div class="container footer-inner">
-            <p class="footer-quote">"Build small, ship often, learn loudly."</p>
             <ul class="footer-links">
                 <li><a href="mailto:mehmetselim692@gmail.com"><i class="fas fa-envelope" aria-hidden="true"></i> mehmetselim692@gmail.com</a></li>
                 <li><a href="https://linkedin.com/in/msc3506" target="_blank" rel="noopener"><i class="fab fa-linkedin-in" aria-hidden="true"></i> LinkedIn</a></li>
                 <li><a href="https://github.com/msc35" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
             </ul>
-            <p class="footer-meta mono">&copy; 2026 Mehmet Selim Çetin · Munich · Available immediately</p>
+            <p class="footer-meta mono">&copy; 2026 Mehmet Selim Çetin · Munich · Available immediately · Driving licence Class B</p>
         </div>
     </footer>
 
